@@ -44,6 +44,42 @@
         <servlet-name>Add</servlet-name>
         <servlet-class>kagoyume.Add</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Login</servlet-name>
+        <servlet-class>kagoyume.Login</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SuccessLogin</servlet-name>
+        <servlet-class>.SuccessLogin</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>registration</servlet-name>
+        <servlet-class>kagoyume.registration</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Registrationconfirm</servlet-name>
+        <servlet-class>kagoyume.Registrationconfirm</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RegistrationComplete</servlet-name>
+        <servlet-class>kagoyume.RegistrationComplete</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoginCheck</servlet-name>
+        <servlet-class>kagoyume.LoginCheck</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>kagoyume.Logout</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Cart</servlet-name>
+        <servlet-class>kagoyume.Cart</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BuyConfirm</servlet-name>
+        <servlet-class>kagoyume.BuyConfirm</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>insert</servlet-name>
         <url-pattern>/insert</url-pattern>
@@ -87,6 +123,42 @@
     <servlet-mapping>
         <servlet-name>Add</servlet-name>
         <url-pattern>/Add</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Login</servlet-name>
+        <url-pattern>/Login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SuccessLogin</servlet-name>
+        <url-pattern>/SuccessLogin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>registration</servlet-name>
+        <url-pattern>/registration</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Registrationconfirm</servlet-name>
+        <url-pattern>/Registrationconfirm</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RegistrationComplete</servlet-name>
+        <url-pattern>/RegistrationComplete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginCheck</servlet-name>
+        <url-pattern>/LoginCheck</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/Logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Cart</servlet-name>
+        <url-pattern>/Cart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BuyConfirm</servlet-name>
+        <url-pattern>/BuyConfirm</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

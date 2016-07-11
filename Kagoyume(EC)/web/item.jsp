@@ -28,13 +28,14 @@
             </tr>
             <tr>
                 <td><img src="<%= usd.getImage()%>"></td>
-                <td width="250"><a href="Item?id=<%= usd.getCode()%>"><%= usd.getName()%></td>
+                <td width="250"><a href="Item?code=<%= usd.getCode()%>"><%= usd.getName()%></td>
                 <td><%= usd.getPrice()%>円</td>
                 <td><%= usd.getDescrition()%></td>
                 <td><%= usd.getRate()%></td>
-                <td width="90"><a href="Add?id=<%= usd.getCode()%>">カートに追加</td>
+                <td width="90"><a href="Add?code=<%= usd.getCode()%>">カートに追加</td>
             </tr>
         </table> <br>
-        <%=jh.top()%>
+        <%=jh.top()%><br>
+        <%@ include file="footer.jsp"%>
     </body>
 </html>

@@ -1,14 +1,12 @@
+package kagoyume;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package kagoyume;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +17,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author yoshi
  */
-public class Item extends HttpServlet {
+public class Login extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,19 +29,13 @@ public class Item extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, Exception {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        // セッションのインスタンスを生成
         HttpSession session = request.getSession();
         try {
-            request.setCharacterEncoding("UTF-8");
-            
-            String code = request.getParameter("code");
-            SearchDataBeans usd = Api.getDetail(code);
-            session.setAttribute("usd", usd);
-            
-            request.getRequestDispatcher(response.encodeURL("/item.jsp")).forward(request, response);
-        } catch(Exception e){
+            session.setAttribute("referer", request.getHeader("REFERER"));
+            request.getRequestDispatcher("/login.jsp").forward(request, response);
+        } catch(NullPointerException e) {
             request.setAttribute("error", e.getMessage());
             request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
@@ -61,11 +53,7 @@ public class Item extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (Exception ex) {
-            Logger.getLogger(Item.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**
@@ -79,11 +67,7 @@ public class Item extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (Exception ex) {
-            Logger.getLogger(Item.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**

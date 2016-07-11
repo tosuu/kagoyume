@@ -1,7 +1,9 @@
 package kagoyume;
 
-import static java.lang.System.out;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 画面系の処理や表示を簡略化するためのヘルパークラス。定数なども保存されます
@@ -11,6 +13,7 @@ public class JumsHelper {
     
     //トップへのリンクを定数として設定
     private final String topURL = "top.jsp";
+    private final String cartURL = "Cart";
     
     public static JumsHelper getInstance(){
         return new JumsHelper();
@@ -21,17 +24,40 @@ public class JumsHelper {
         return "<a href=\""+topURL+"\">トップへ戻る</a>";
     }
     
-
-//    public String chkinput(ArrayList<String> chkList){
-//        String output = "";
-//        for(String val : chkList){
-//                if(val.equals("item")){
-//                    output += "商品名";
-//                }
-//                output +="が未記入です<br>";
-//            }
-//        return output;
-//    }
+    public String cart() {
+        return "<a href=\""+cartURL+"\">カートを見る</a>";
+    }
+    
+    public String chkinput(ArrayList<String> chkList){
+        String output = "";
+        for(String val : chkList){
+                if(val.equals("item")){
+                    output += "商品名";
+                }
+                output +="が未記入です<br>";
+            }
+        return output;
+    }
+    
+    public String chkUserInfo(ArrayList<String> chkList){
+        String output = "";
+        for(String val : chkList){
+                if(val.equals("name")){
+                    output += "名前";
+                }
+                if(val.equals("password")){
+                    output += "パスワード";
+                }
+                if(val.equals("mail")){
+                    output += "メールアドレス";
+                }
+                if(val.equals("address")){
+                    output += "住所";
+                }
+                output +="が未記入です<br>";
+            }
+        return output;
+    }
     
     public String showError(String error){
         String output = "";
@@ -60,4 +86,20 @@ public class JumsHelper {
             return "";
         }
     }
+    
+    public String sendType(int i){
+        String message = "";
+        switch(i){
+            case 1:
+                message += "ヤマト運輸";
+                break;
+            case 2:
+                message += "佐川急便";
+                break;
+            case 3:
+                message += "クロネコヤマト";
+                break;
+        }
+        return message;
+    } 
 }

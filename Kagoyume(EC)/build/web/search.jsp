@@ -2,7 +2,7 @@
 <%@page import="com.fasterxml.jackson.databind.JsonNode"%>
 <%@page import="kagoyume.Api"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="kagoyume.UserDataBeans" %>
+<%@page import="kagoyume.UserData" %>
 <%@page import="kagoyume.JumsHelper" %>
 <%
     JumsHelper jh = JumsHelper.getInstance();
@@ -43,6 +43,7 @@
                 <%}%>
                 </table> <br>
         <br>
-        <%=jh.top()%>
+        <%=jh.top()%><br>
+        <%@ include file="footer.jsp"%>
     </body>
 </html>

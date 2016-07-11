@@ -1,14 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package kagoyume;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,10 +9,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- *
- * @author yoshi
+ * insertresultと対応するサーブレット
+ * フォームから入力された値をセッション経由で受け取り、データベースにinsertする
+ * 直接アクセスした場合はerror.jspに振り分け
+ * @author hayashi-s
  */
-public class Item extends HttpServlet {
+public class RegistrationComplete extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,19 +26,38 @@ public class Item extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, Exception {
-        response.setContentType("text/html;charset=UTF-8");
-        // セッションのインスタンスを生成
-        HttpSession session = request.getSession();
-        try {
-            request.setCharacterEncoding("UTF-8");
+            throws ServletException, IOException {
+        
+        //セッションスタート
+        HttpSession hs = request.getSession();
+        
+        try{
+            request.setCharacterEncoding("UTF-8");//リクエストパラメータの文字コードをUTF-8に変更
             
-            String code = request.getParameter("code");
-            SearchDataBeans usd = Api.getDetail(code);
-            session.setAttribute("usd", usd);
+//            //アクセスルートチェック
+//            String accesschk = request.getParameter("ac");
+//            if(accesschk ==null || (Integer)session.getAttribute("ac")!=Integer.parseInt(accesschk)){
+//                throw new Exception("不正なアクセスです");
+//            }
             
-            request.getRequestDispatcher(response.encodeURL("/item.jsp")).forward(request, response);
-        } catch(Exception e){
+            UserData ud = (UserData)hs.getAttribute("ud");
+            UserDataDTO udd = new UserDataDTO(); 
+            
+            //DTOオブジェクトにマッピング。DB専用のパラメータに変換
+            ud.UD2DTOMapping(udd);
+            
+            //DBへデータの挿入
+            UserDataDAO .getInstance().insertUser(udd);
+            
+            //成功したのでセッションの値を削除
+            hs.invalidate();
+            
+            //結果画面での表示用に入力パラメータ―をリクエストパラメータとして保持
+            request.setAttribute("ud", ud);
+            
+            request.getRequestDispatcher("/registrationcomplete.jsp").forward(request, response);
+        }catch(Exception e){
+            //何らかの理由で失敗したらエラーページにエラー文を渡して表示。想定は不正なアクセスとDBエラー
             request.setAttribute("error", e.getMessage());
             request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
@@ -61,11 +75,7 @@ public class Item extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (Exception ex) {
-            Logger.getLogger(Item.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**
@@ -79,11 +89,7 @@ public class Item extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (Exception ex) {
-            Logger.getLogger(Item.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**

@@ -1,14 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package kagoyume;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,10 +9,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- *
- * @author yoshi
+ * insertconfirm.jspと対応するサーブレット
+ * フォーム入力された情報はここでセッションに格納し、以降持ちまわることになる
+ * 直接アクセスした場合はerror.jspに振り分け
+ * @author hayashi-s
  */
-public class Item extends HttpServlet {
+public class Registrationconfirm extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,22 +26,49 @@ public class Item extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, Exception {
-        response.setContentType("text/html;charset=UTF-8");
+            throws ServletException, IOException {
+        
         // セッションのインスタンスを生成
         HttpSession session = request.getSession();
-        try {
+        
+        try{
             request.setCharacterEncoding("UTF-8");
             
-            String code = request.getParameter("code");
-            SearchDataBeans usd = Api.getDetail(code);
-            session.setAttribute("usd", usd);
+            // アクセスルートチェック
+//            String accesschk = request.getParameter("ac");
+//            if(accesschk ==null || (Integer)session.getAttribute("ac")!=Integer.parseInt(accesschk)){
+//                throw new Exception("不正なアクセスです");
+//            }
+//            
+            String name = request.getParameter("name");
+            String password = request.getParameter("password");
+            String mail = request.getParameter("mail");
+            String address = request.getParameter("address");
             
-            request.getRequestDispatcher(response.encodeURL("/item.jsp")).forward(request, response);
-        } catch(Exception e){
+            // フォームからの各パラメータを取得して、JavaBeansに格納
+            UserData ud = new UserData();
+            ud.setName(name);
+            ud.setPassword(password);
+            ud.setMail(mail);
+            ud.setAddress(address);
+            
+//            ArrayList alData = new ArrayList();
+//            alData.add(name);
+//            alData.add(password);
+//            alData.add(mail);
+//            alData.add(address);
+//            session.setAttribute("adData", alData);
+            
+            //ユーザーデータをセッションに格納
+            session.setAttribute("ud", ud);
+            System.out.println("Session updated!!");
+            
+            request.getRequestDispatcher("/registrationconfirm.jsp").forward(request, response);
+        }catch(Exception e){
             request.setAttribute("error", e.getMessage());
             request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
+            
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -61,11 +83,7 @@ public class Item extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (Exception ex) {
-            Logger.getLogger(Item.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**
@@ -79,11 +97,7 @@ public class Item extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (Exception ex) {
-            Logger.getLogger(Item.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**

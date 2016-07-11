@@ -3,14 +3,14 @@
     Created on : 2016/07/05, 10:49:04
     Author     : yoshi
 --%>
+<%@page import="java.util.HashMap"%>
 <%@page import="kagoyume.SearchDataBeans"%>
 <%@page import="kagoyume.JumsHelper"%>
 <%
     JumsHelper jh = JumsHelper.getInstance();
-    
-    // cartがnullですねーw
-    SearchDataBeans cart = (SearchDataBeans)session.getAttribute("cart");
-    SearchDataBeans usd = (SearchDataBeans)session.getAttribute("usd");
+    // セッションのcartオブジェクトがカートに追加された商品情報を管理する
+    HashMap<String, SearchDataBeans> cart = (HashMap<String, SearchDataBeans>)session.getAttribute("cart");
+    String code = (String)request.getAttribute("code");
 %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -30,12 +30,14 @@
                 <th>値段</th>
             </tr>
             <tr>
-                <td><img src="<%= usd.getImage()%>"></td>
-                <td width="250"><a href="Item?id=<%//= cart.getCode()%>"><%//= cart.getName()%></td>
-                <td><%//= usd.getPrice()%>円</td>
+                <th width="250"><img src="<%= cart.get(code).getImage()%>"></th>
+                <th><a href="Item?id=<%= cart.get(code).getCode()%>"><%= cart.get(code).getName() %></a></th>
+                <th><%= cart.get(code).getPrice()%>円</th>
             </tr>
         </table> <br>
         
-        <%= jh.top() %>
+        <a href="<%= response.encodeURL("Cart") %>">カートを確認</a><br>
+        <a href="<%= response.encodeURL("top.jsp") %>">トップに戻る</a>
+        <%@ include file="footer.jsp"%>
     </body>
 </html>

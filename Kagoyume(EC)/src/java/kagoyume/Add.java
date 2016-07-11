@@ -7,6 +7,8 @@ package kagoyume;
 
 import java.io.IOException;
 import static java.lang.System.out;
+import java.util.ArrayList;
+import java.util.HashMap;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -33,14 +35,16 @@ public class Add extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         // セッションのインスタンスを生成
         HttpSession session = request.getSession();
+        HashMap<String, SearchDataBeans> cart = new HashMap<String, SearchDataBeans>();
         try {
             request.setCharacterEncoding("UTF-8");
-            SearchDataBeans usd = (SearchDataBeans)session.getAttribute("usd");
-//            System.out.print(usd.getName());
-//            System.out.print("############");
-            session.setAttribute("cart", usd);
-                
-            request.getRequestDispatcher("/add.jsp").forward(request, response);
+            String code = request.getParameter("code");
+            SearchDataBeans data = Api.getDetail(code);
+            cart.put(data.getCode(), data);
+            
+            request.setAttribute("code", data.getCode());
+            session.setAttribute("cart", cart);
+            request.getRequestDispatcher(response.encodeURL("/add.jsp")).forward(request, response);
         } catch(NullPointerException e) {    
             request.setAttribute("error", e.getMessage());
             request.getRequestDispatcher("/error.jsp").forward(request, response);

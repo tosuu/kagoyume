@@ -1,13 +1,17 @@
 <%@page import="kagoyume.JumsHelper"%>
+<%@page import="kagoyume.UserData"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<% boolean errorflg = JumsHelper.getInstance().chkError(request.getAttribute("error")); %>
+<% boolean errorflg = JumsHelper.getInstance().chkError(request.getAttribute("error"));
+   JumsHelper jh = JumsHelper.getInstance();
+   Integer userID = (Integer)session.getAttribute("userID");
+%>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Kagoyume Top</title>
 </head>
-<body>
+
     <% if (errorflg) { %>
         <font size=6 color="red"><%= JumsHelper.getInstance().getEmptyError(request.getAttribute("error").toString()) %></font>
     <% } %>
@@ -19,11 +23,13 @@
     <h3>仕方がありません。無駄遣いは厳禁です。でも、一度買うと決めたものを諦めるなんて、ストレスじゃあありませんか？ <br>できればお金の事なんか考えずに好きなだけ買い物がしたい・・・。</h3>
     <h3>このサービスは、そんなフラストレションを解消するために生まれた『金銭取引が絶対に発生しない』<br>『いくらでも、どんなものでも購入できる(気分になれる)』『ECサイト』です</h3><br>
     
-    <form action="Search" method="GET">
+    <form action="<%= response.encodeURL("Search") %>" method="GET">
         検索:
         <input type="text" name="name" value="">
         <br><br>
         <input type="submit" name="btnSubmit" value="送信">
     </form><br>
-</body>
+    
+    <jsp:include page="/footer.jsp" />
+
 </html>
